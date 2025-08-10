@@ -1,0 +1,117 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }} / ${{ matrix.runtime }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # macOS（Apple Silicon ランナー）。NativeAOT は osx-arm64 を推奨
+          - os: macos-14
+            runtime: osx-arm64
+            ext: zip
+          # Linux（glibc ベース）
+          - os: ubuntu-22.04
+            runtime: linux-x64
+            ext: tar.gz
+          # Windows
+          - os: windows-latest
+            runtime: win-x64
+            ext: zip
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      # Linux: NativeAOT のリンクに必要なツール/ライブラリ
+      - name: Install native deps (Linux)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            clang lld zlib1g-dev libicu-dev libkrb5-dev
+
+      # macOS: Xcode/CLT は標準で入っているので特に不要だが、確認と PATH 調整を明示
+      - name: Select Apple toolchain (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          xcode-select -p
+          echo "CC=$(xcrun -f clang)" >> $GITHUB_ENV
+          echo "CXX=$(xcrun -f clang++)" >> $GITHUB_ENV
+          echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
+          echo "$(dirname $(xcrun -f clang))" >> $GITHUB_PATH
+
+      # 依存キャッシュ（任意）
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj','**/*.props','**/*.targets') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      # テスト（任意）
+      - name: Test
+        run: dotnet test -c Release --nologo
+
+      - name: Publish (NativeAOT)
+        run: |
+          dotnet publish ./src/hisui/hisui.csproj \
+            -c Release \
+            -r ${{ matrix.runtime }} \
+            -p:PublishAot=true \
+            --self-contained true \
+            -o artifacts/${{ matrix.runtime }}
+
+      - name: Package
+        shell: bash
+        run: |
+          cd artifacts/${{ matrix.runtime }}
+          APP=hisui
+          if [ "${{ matrix.ext }}" = "zip" ]; then
+            zip -r "../${APP}-${{ matrix.runtime }}.zip" .
+          else
+            tar czf "../${APP}-${{ matrix.runtime }}.tar.gz" .
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hisui-${{ matrix.runtime }}
+          path: artifacts/hisui-${{ matrix.runtime }}.${{ matrix.ext }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Checksums
+        run: |
+          cd dist
+          find . -type f -maxdepth 2 -name "hisui-*.zip" -o -name "hisui-*.tar.gz" | xargs shasum -a 256 > SHA256SUMS.txt
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/**/hisui-*.zip
+            dist/**/hisui-*.tar.gz
+            dist/SHA256SUMS.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
