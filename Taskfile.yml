@@ -1,0 +1,33 @@
+version: '3'
+
+tasks:
+  init:
+    desc: "Create .NET Project: task init <project_name>"
+    cmds:
+      - bash ./script/initialize_dotnet_project.sh {{ .CLI_ARGS }}
+    silent: true
+
+  build:dev:
+    desc: "Build .NET Application"
+    cmds:
+      - bash ./script/build_dotnet_project.sh
+    silent: true
+
+  build:prod:
+    desc: "Build Native Compiled .NET Application: task build:prod -- (osx-arm64|linux-x64|linux-arm64|win-x64)"
+    cmds:
+      - bash ./script/aot_compile_dotnet_application.sh {{ .CLI_ARGS }}
+    silent: true
+
+  test:
+    desc: "Test .NET Application"
+    cmds:
+      - bash ./script/test_dotnet_application.sh
+    silent: true
+
+  format:
+    desc: "Format .NET Application"
+    cmds:
+      - bash ./script/format_dotnet_project.sh
+    silent: true
+
