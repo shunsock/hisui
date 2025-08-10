@@ -1,10 +1,13 @@
-name: build-and-release
+name: release
 
 on:
   push:
     tags:
-      - "v*"
-  workflow_dispatch:
+      - "*.*.*"
+      - "*.*.*-alpha.*"
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -104,7 +107,7 @@ jobs:
       - name: Checksums
         run: |
           cd dist
-          find . -type f -maxdepth 2 -name "hisui-*.zip" -o -name "hisui-*.tar.gz" | xargs shasum -a 256 > SHA256SUMS.txt
+          find . -maxdepth 2 -type f \( -name "hisui-*.zip" -o -name "hisui-*.tar.gz" \) | xargs shasum -a 256 > SHA256SUMS.txt 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
