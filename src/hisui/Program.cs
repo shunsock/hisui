@@ -3,7 +3,8 @@
 var app = CoconaApp.Create();
 app.AddCommand(
     "hello",
-    (string name) => {
+    (string name) =>
+    {
         Console.WriteLine("Hello {0}!", name);
     }
 );
