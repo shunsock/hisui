@@ -16,7 +16,7 @@ public class TextWidthConverterTests
             Assert.That(TextWidthConverter.ToHalfWidth("ａ"), Is.EqualTo("a"));
             Assert.That(TextWidthConverter.ToHalfWidth("Ｚ"), Is.EqualTo("Z"));
             Assert.That(TextWidthConverter.ToHalfWidth("ｚ"), Is.EqualTo("z"));
-            
+
             // Full-width numbers
             Assert.That(TextWidthConverter.ToHalfWidth("０"), Is.EqualTo("0"));
             Assert.That(TextWidthConverter.ToHalfWidth("１２３４５"), Is.EqualTo("12345"));
@@ -118,7 +118,7 @@ public class TextWidthConverterTests
             Assert.That(TextWidthConverter.ToFullWidth("a"), Is.EqualTo("ａ"));
             Assert.That(TextWidthConverter.ToFullWidth("Z"), Is.EqualTo("Ｚ"));
             Assert.That(TextWidthConverter.ToFullWidth("z"), Is.EqualTo("ｚ"));
-            
+
             // Half-width numbers
             Assert.That(TextWidthConverter.ToFullWidth("0"), Is.EqualTo("０"));
             Assert.That(TextWidthConverter.ToFullWidth("12345"), Is.EqualTo("１２３４５"));
@@ -162,26 +162,26 @@ public class TextWidthConverterTests
             Assert.That(TextWidthConverter.ToFullWidth("ｳ"), Is.EqualTo("ウ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｴ"), Is.EqualTo("エ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｵ"), Is.EqualTo("オ"));
-            
+
             Assert.That(TextWidthConverter.ToFullWidth("ｶ"), Is.EqualTo("カ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｷ"), Is.EqualTo("キ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｸ"), Is.EqualTo("ク"));
             Assert.That(TextWidthConverter.ToFullWidth("ｹ"), Is.EqualTo("ケ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｺ"), Is.EqualTo("コ"));
-            
+
             Assert.That(TextWidthConverter.ToFullWidth("ﾊ"), Is.EqualTo("ハ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾋ"), Is.EqualTo("ヒ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾌ"), Is.EqualTo("フ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾍ"), Is.EqualTo("ヘ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾎ"), Is.EqualTo("ホ"));
-            
+
             Assert.That(TextWidthConverter.ToFullWidth("ﾔ"), Is.EqualTo("ヤ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾕ"), Is.EqualTo("ユ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾖ"), Is.EqualTo("ヨ"));
-            
+
             Assert.That(TextWidthConverter.ToFullWidth("ﾜ"), Is.EqualTo("ワ"));
             Assert.That(TextWidthConverter.ToFullWidth("ﾝ"), Is.EqualTo("ン"));
-            
+
             // Small characters
             Assert.That(TextWidthConverter.ToFullWidth("ｧ"), Is.EqualTo("ァ"));
             Assert.That(TextWidthConverter.ToFullWidth("ｨ"), Is.EqualTo("ィ"));
@@ -199,11 +199,11 @@ public class TextWidthConverterTests
         {
             // Note: These tests depend on NFKC normalization behavior
             // The half-width katakana + dakuten/handakuten should combine into single full-width characters
-            
+
             // Dakuten (voiced marks)
             Assert.That(TextWidthConverter.ToFullWidth("ｶﾞ"), Is.EqualTo("ガ")); // May normalize to ガ depending on NFKC
             Assert.That(TextWidthConverter.ToFullWidth("ｷﾞ"), Is.EqualTo("ギ")); // May normalize to ギ depending on NFKC
-            
+
             // Handakuten (semi-voiced marks)
             Assert.That(TextWidthConverter.ToFullWidth("ﾊﾟ"), Is.EqualTo("パ")); // May normalize to パ depending on NFKC
             Assert.That(TextWidthConverter.ToFullWidth("ﾋﾟ"), Is.EqualTo("ピ")); // May normalize to ピ depending on NFKC
@@ -253,7 +253,7 @@ public class TextWidthConverterTests
             // Test boundary characters of the conversion range 21-7E
             Assert.That(TextWidthConverter.ToFullWidth("!"), Is.EqualTo("！")); // 21 -> FF01
             Assert.That(TextWidthConverter.ToFullWidth("~"), Is.EqualTo("～")); // 7E -> FF5E
-            
+
             // Test boundary characters of half-width katakana range FF61-FF9F
             Assert.That(TextWidthConverter.ToFullWidth("｡"), Is.EqualTo("。")); // FF61
             Assert.That(TextWidthConverter.ToFullWidth("ﾟ"), Is.EqualTo("゚")); // FF9F
@@ -269,7 +269,7 @@ public class TextWidthConverterTests
             var original = "Hello World! 123 @#$%^&*()";
             var fullWidth = TextWidthConverter.ToFullWidth(original);
             var backToHalf = TextWidthConverter.ToHalfWidth(fullWidth);
-            
+
             Assert.That(backToHalf, Is.EqualTo(original));
         }
 
@@ -279,7 +279,7 @@ public class TextWidthConverterTests
             var original = "Ｈｅｌｌｏ　Ｗｏｒｌｄ！　１２３　＠＃＄％＾＆＊（）";
             var halfWidth = TextWidthConverter.ToHalfWidth(original);
             var backToFull = TextWidthConverter.ToFullWidth(halfWidth);
-            
+
             Assert.That(backToFull, Is.EqualTo(original));
         }
 
@@ -289,7 +289,7 @@ public class TextWidthConverterTests
             var input = "こんにちはＡＢＣ１２３！　半角ｱｲｳエオと全角アイウエオ";
             var expectedHalf = "こんにちはABC123! 半角ｱｲｳエオと全角アイウエオ";
             var expectedFull = "こんにちはＡＢＣ１２３！　半角アイウエオと全角アイウエオ";
-            
+
             Assert.That(TextWidthConverter.ToHalfWidth(input), Is.EqualTo(expectedHalf));
             Assert.That(TextWidthConverter.ToFullWidth(input), Is.EqualTo(expectedFull));
         }
@@ -307,7 +307,7 @@ public class TextWidthConverterTests
             var input = "Hello　World こんにちは　世界";
             var expectedHalf = "Hello World こんにちは 世界";
             var expectedFull = "Ｈｅｌｌｏ　Ｗｏｒｌｄ　こんにちは　世界";
-            
+
             Assert.That(TextWidthConverter.ToHalfWidth(input), Is.EqualTo(expectedHalf));
             Assert.That(TextWidthConverter.ToFullWidth(input), Is.EqualTo(expectedFull));
         }
@@ -316,11 +316,11 @@ public class TextWidthConverterTests
         public void Performance_LargeString()
         {
             var largeInput = string.Concat(Enumerable.Repeat("Ａｂｃ１２３！＃＄", 1000));
-            
+
             var sw = System.Diagnostics.Stopwatch.StartNew();
             var result = TextWidthConverter.ToHalfWidth(largeInput);
             sw.Stop();
-            
+
             Assert.That(result.Length, Is.EqualTo(largeInput.Length));
             Assert.That(sw.ElapsedMilliseconds, Is.LessThan(100)); // Should complete quickly
         }
