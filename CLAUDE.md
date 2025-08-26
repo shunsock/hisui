@@ -10,10 +10,10 @@ Hisui is a .NET 9.0 console application built with the Cocona CLI framework. The
 
 This project uses Task (Taskfile.yml) as the primary task runner:
 
-- **Build (development)**: `task build:dev` (runs `dotnet build`)
-- **Build (production)**: `task build:prod -- <runtime>` (AOT compilation for osx-arm64|linux-x64|linux-arm64|win-x64)
+- **Build**: `task build` (runs `dotnet build`)
 - **Test**: `task test` (runs `dotnet test`)
 - **Format**: `task format` (runs `dotnet format`)
+- **Initialize**: `task init <project_name>` (creates new .NET project)
 
 Direct dotnet commands also work:
 - `dotnet build` - Build the solution
@@ -24,16 +24,23 @@ Direct dotnet commands also work:
 ## Architecture
 
 - **Main application**: `src/hisui/` - Console CLI application using Cocona framework
-- **Tests**: `tests/hisui.Tests/` - Unit tests using .NET test framework
+- **Tests**: `tests/hisui.Tests/` - Unit tests using NUnit framework
 - **Utilities**: 
-  - `TextWidthConverter.cs` - Handles full-width/half-width character conversions for Japanese text
+  - `TextWidth/TextWidthConverter.cs` - Handles full-width/half-width character conversions for Japanese text
 
 The application is structured as a simple CLI with command-based architecture using Cocona for command parsing and routing.
 
 ## Key Dependencies
 
+### Main Application
 - **Cocona (2.2.0)**: CLI framework for command handling
 - **.NET 9.0**: Target framework with nullable reference types enabled
+
+### Test Dependencies
+- **NUnit (4.2.2)**: Unit testing framework
+- **Microsoft.NET.Test.Sdk (17.12.0)**: .NET test SDK
+- **NUnit3TestAdapter (4.6.0)**: Test adapter for running NUnit tests
+- **coverlet.collector (6.0.2)**: Code coverage collection
 
 ## Build Scripts
 
@@ -41,4 +48,4 @@ The `script/` directory contains bash scripts for common tasks:
 - `build_dotnet_project.sh` - Wrapper for dotnet build
 - `test_dotnet_application.sh` - Wrapper for dotnet test  
 - `format_dotnet_project.sh` - Wrapper for dotnet format
-- `aot_compile_dotnet_application.sh` - AOT compilation script
+- `initialize_dotnet_project.sh` - Script for initializing new .NET projects
