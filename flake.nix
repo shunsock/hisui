@@ -1,5 +1,5 @@
 {
-  description = "C# Shell";
+  description = "Hisui - Text width conversion CLI tool";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -10,14 +10,29 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        dotnet-sdk = pkgs.dotnetCorePackages.sdk_9_0;
+        dotnet-runtime = pkgs.dotnetCorePackages.runtime_9_0;
       in {
-        devShell = pkgs.mkShell {
+        packages.default = pkgs.buildDotnetModule {
+          pname = "hisui";
+          version = "0.1.0";
+          src = ./.;
+
+          projectFile = "src/hisui/hisui.csproj";
+          nugetDeps = ./deps.json;
+
+          inherit dotnet-sdk dotnet-runtime;
+
+          executables = [ "hisui" ];
+        };
+
+        devShells.default = pkgs.mkShell {
           buildInputs = [
-            pkgs.dotnet-sdk_9
+            dotnet-sdk
             pkgs.go-task
             pkgs.tree
           ];
-          DOTNET_ROOT = "${pkgs.dotnet-sdk_9}/share/dotnet";
+          DOTNET_ROOT = "${dotnet-sdk}/share/dotnet";
           shellHook = ''
             echo "dotnet version: $(dotnet --version)"
             echo "task version: $(task --version)"
