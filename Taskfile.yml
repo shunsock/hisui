@@ -16,12 +16,17 @@ tasks:
   test:
     desc: "Test .NET Application"
     cmds:
-      - bash ./script/test_dotnet_application.sh
+      - bash ./bin/test.sh
     silent: true
 
   format:
     desc: "Format .NET Application"
     cmds:
-      - bash ./script/format_dotnet_project.sh
+      - bash ./bin/format.sh
     silent: true
 
+  lint:
+    desc: "Lint .NET Application (format check)"
+    cmds:
+      - bash ./bin/lint.sh
+    silent: true
