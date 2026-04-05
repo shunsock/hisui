@@ -30,6 +30,8 @@ src/hisui/
 │   ├── ValueObject/
 │   │   ├── UnicodeText.cs
 │   │   └── ConversionDirection.cs
+│   ├── Entity/
+│   │   └── .gitkeep
 │   └── DomainService/
 │       └── TextWidthConversionService.cs
 ├── UseCase/
@@ -152,9 +154,9 @@ public static class TextWidthConversionService
 
 ### 3.3 Entity について
 
-現在の hisui は状態を持たないテキスト変換ツールであり、ライフサイクルやIDで識別されるドメインオブジェクトが存在しない。そのため Entity 層は**設けない**。
+現在の hisui は状態を持たないテキスト変換ツールであり、ライフサイクルやIDで識別されるドメインオブジェクトが存在しない。そのため `Domain/Entity/` ディレクトリは `.gitkeep` で予約し、実装ファイルは置かない。
 
-将来的に変換履歴の管理や辞書エンティティが必要になった場合に `Domain/Entity/` を追加する。
+将来的に変換履歴の管理や辞書エンティティが必要になった場合にここへ追加する。
 
 ## 4. UseCase 層（CQRS）
 
