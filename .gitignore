@@ -12,6 +12,8 @@
 [Rr]elease/
 x64/
 [Bb]in/
+!/bin/
+!/bin/*.sh
 [Oo]bj/
 
 # MSTest test Results
