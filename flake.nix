@@ -10,8 +10,8 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        dotnet-sdk = pkgs.dotnetCorePackages.sdk_9_0;
-        dotnet-runtime = pkgs.dotnetCorePackages.runtime_9_0;
+        dotnet-sdk = pkgs.dotnetCorePackages.sdk_10_0;
+        dotnet-runtime = pkgs.dotnetCorePackages.runtime_10_0;
       in {
         packages.default = pkgs.buildDotnetModule {
           pname = "hisui";
