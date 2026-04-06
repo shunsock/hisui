@@ -10,14 +10,14 @@
     "hash": "sha256-0su/ylZ68+FDZ6mgfp3qsm7qpfPtD5SW75HXbVhs5qk="
   },
   {
-    "pname": "Cocona",
-    "version": "2.2.0",
-    "hash": "sha256-akpLso3HT1xnHvfuCnuysIMq620qkyC8ZtPUQXYwTU4="
+    "pname": "NextCocona",
+    "version": "1.0.0",
+    "hash": "sha256-aIMMI6my01bi8B57bD5plt7iadHSNDjKiwBAe/FoWr0="
   },
   {
-    "pname": "Cocona.Core",
-    "version": "2.2.0",
-    "hash": "sha256-+hl7EHdIfemAlhaAsU80SWVMiO/OAotVRC9mE855QLY="
+    "pname": "NextCocona.Core",
+    "version": "1.0.0",
+    "hash": "sha256-EISzBodYYtsX2bOionJzlnVDLIuIvDlkdjeB63ePTLI="
   },
   {
     "pname": "Microsoft.Bcl.AsyncInterfaces",
