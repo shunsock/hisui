@@ -8,7 +8,7 @@ hisui は全角・半角変換を行う CLI ツールである。現在のコー
 
 ```
 src/hisui/
-├── Program.cs                  # Cocona CLI エントリポイント（直接 TextWidthConverter を呼び出す）
+├── Program.cs                  # NextCocona CLI エントリポイント（直接 TextWidthConverter を呼び出す）
 └── TextWidth/
     └── TextWidthConverter.cs   # 静的ユーティリティクラス
 ```
@@ -17,7 +17,7 @@ Program.cs がドメインロジック（TextWidthConverter）を直接参照し
 
 ### 目的
 
-- ドメインロジックをフレームワーク（Cocona）から分離する
+- ドメインロジックをフレームワーク（NextCocona）から分離する
 - 依存性逆転により、ドメイン層が外部に依存しない構造にする
 - CQRS パターンで外部アクセスの意図を明確にする
 - 将来的な機能追加（新しい変換コマンド、外部辞書参照など）に対して開放的な構造にする
@@ -302,7 +302,7 @@ public sealed class ConsoleOutputAdapter : IOutputPort
 
 ### 5.2 Program.cs（Composition Root）
 
-DI コンテナの構成と Cocona コマンドの登録を行うエントリポイント。
+DI コンテナの構成と NextCocona コマンドの登録を行うエントリポイント。
 
 ```csharp
 using Cocona;
@@ -342,7 +342,7 @@ app.Run();
 ```
 
 **設計判断:**
-- Cocona の DI 機能を活用し、Composition Root で依存関係を組み立てる
+- NextCocona の DI 機能を活用し、Composition Root で依存関係を組み立てる
 - コマンドハンドラ内では Value Object への変換 → Query 生成 → Handler 呼び出し → 出力の流れを明示する
 - Program.cs はオーケストレーションのみ担い、ビジネスロジックを持たない
 

@@ -118,7 +118,7 @@ Using dotnet directly:
 ### Architecture
 
 The project is structured as follows:
-- `src/hisui/` - Main console application using Cocona framework
+- `src/hisui/` - Main console application using NextCocona framework
 - `src/hisui/TextWidth/TextWidthConverter.cs` - Core text width conversion utilities
 - `tests/hisui.Tests/` - Unit tests using NUnit framework
 - `script/` - Build and utility scripts
@@ -126,7 +126,7 @@ The project is structured as follows:
 ### Dependencies
 
 **Main Application:**
-- Cocona 2.2.0 - CLI framework for command handling
+- NextCocona 1.0.0 - CLI framework for command handling
 - .NET 9.0 - Target framework with nullable reference types enabled
 
 **Test Dependencies:**

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Hisui is a .NET 10.0 console application built with the Cocona CLI framework. The project includes text width conversion utilities for handling full-width/half-width character transformations (commonly used in Japanese text processing).
+Hisui is a .NET 10.0 console application built with the NextCocona CLI framework. The project includes text width conversion utilities for handling full-width/half-width character transformations (commonly used in Japanese text processing).
 
 ## Development Commands
 
@@ -23,17 +23,17 @@ Direct dotnet commands also work:
 
 ## Architecture
 
-- **Main application**: `src/hisui/` - Console CLI application using Cocona framework
+- **Main application**: `src/hisui/` - Console CLI application using NextCocona framework
 - **Tests**: `tests/hisui.Tests/` - Unit tests using NUnit framework
 - **Utilities**: 
   - `TextWidth/TextWidthConverter.cs` - Handles full-width/half-width character conversions for Japanese text
 
-The application is structured as a simple CLI with command-based architecture using Cocona for command parsing and routing.
+The application is structured as a simple CLI with command-based architecture using NextCocona for command parsing and routing.
 
 ## Key Dependencies
 
 ### Main Application
-- **Cocona (2.2.0)**: CLI framework for command handling
+- **NextCocona (1.0.0)**: CLI framework for command handling
 - **.NET 10.0**: Target framework with nullable reference types enabled
 
 ### Test Dependencies
